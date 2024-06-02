@@ -4,7 +4,6 @@ type EquivalenceClass struct {
 	Class []State
 }
 
-// NewClassEquivalence /*
 // Создаем класс новый экземпляр класса эквивалентности
 func NewClassEquivalence() *EquivalenceClass {
 	return &EquivalenceClass{
@@ -12,10 +11,12 @@ func NewClassEquivalence() *EquivalenceClass {
 	}
 }
 
+// Сортировка класса эквивалентности
 func (ce *EquivalenceClass) sort() {
 	quickSort(ce.Class, 0, len(ce.Class)-1)
 }
 
+// Алгоритм быстрой сортировки
 func quickSort(arr []State, low, high int) []State {
 	if low < high {
 		var p int
@@ -39,9 +40,7 @@ func partition(arr []State, low, high int) ([]State, int) {
 	return arr, i
 }
 
-// GetEquivalenceClasses
 // Получаем все классы эквивалентности
-// /*
 func (ce *EquivalenceClass) GetEquivalenceClasses(phiTable map[State][]State, psiTable map[State][]int) map[int][]EquivalenceClass {
 	var (
 		result map[int][]EquivalenceClass
@@ -71,9 +70,7 @@ func (ce *EquivalenceClass) GetEquivalenceClasses(phiTable map[State][]State, ps
 	return result
 }
 
-/*
-Получаем первый класс эквивалентность, используя таблицу переходу, полученную из функции "пси"
-*/
+// Получаем первый класс эквивалентность, используя таблицу переходов, полученную из функции "пси"
 func (ce *EquivalenceClass) getFirstClass(psiTable map[State][]int) []EquivalenceClass {
 	var (
 		result      []EquivalenceClass
@@ -101,6 +98,7 @@ func (ce *EquivalenceClass) getFirstClass(psiTable map[State][]int) []Equivalenc
 	return result
 }
 
+// Получаем следующие классы эквивалентности, используя таблицу переходов, полученную из функции "пси"
 func (ce *EquivalenceClass) getNextClass(phiTable map[State][]State, class []EquivalenceClass) []EquivalenceClass {
 	var (
 		result []EquivalenceClass
@@ -157,6 +155,7 @@ func compute(states []State, class []EquivalenceClass, result *[]EquivalenceClas
 	}
 }
 
+// Получаем номер подкласса эквивалентности
 func getSubclassNumber(state State, class []EquivalenceClass) int {
 	var (
 		condition bool
@@ -178,9 +177,7 @@ func getSubclassNumber(state State, class []EquivalenceClass) int {
 	return result
 }
 
-/*
-Сравнение двух массивов
-*/
+// Сравнение двух массивов
 func compareArray(src, dest []int) bool {
 	if src[0] == dest[0] && src[1] == dest[1] {
 		return true

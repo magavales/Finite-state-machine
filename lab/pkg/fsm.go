@@ -6,17 +6,20 @@ import (
 )
 
 type FSM struct {
-	n        int
-	phi      []int
-	psi      []int
-	graph    *Graph
-	PhiTable map[State][]State
-	PsiTable map[State][]int
+	n        int               // длина регистра
+	phi      []int             // функция фи
+	psi      []int             // функция пси
+	graph    *Graph            // граф автомата
+	PhiTable map[State][]State // таблица состояний, полученных из функции фи
+	PsiTable map[State][]int   // таблица состояний, полученных из функции пси
+	Delta    int
+	Mu       int
 }
 
-// NewFSM
-// Создание нового экземпляра класса FSM
-// /*
+// Создание нового экземпляра класса FSM. На вход методу подается длина регистра, функции фи и пси. Метод взвращает
+// экземпляр класса FSM
+// Входные данные: n int, phi, psi []int
+// Выходные данные: *FSM
 func NewFSM(n int, phi, psi []int) *FSM {
 	return &FSM{
 		n:        n,
@@ -28,23 +31,21 @@ func NewFSM(n int, phi, psi []int) *FSM {
 	}
 }
 
-// GetConnectivityComponents
 // Получение компонентов связности автомата
-// /*
+// Входные данные: null
+// Выходные данные: [][]State
 func (f *FSM) GetConnectivityComponents() [][]State {
 	return f.graph.GetConnectivityComponents()
 }
 
-// GetStrongConnectivityComponents
 // Получение компонентов сильной связности автомата
-// /*
+// Входные данные: null
+// Выходные данные: [][]State
 func (f *FSM) GetStrongConnectivityComponents() [][]State {
 	return f.graph.GetStrongConnectivityComponents()
 }
 
-// Init
-// Инициализация класса FSM
-// /*
+// Инициализация класса FSM. В рамках данной функции создаются граф, таблица фи и пси, где находятся состояния
 func (f *FSM) Init() {
 	var (
 		zpPhi int
@@ -67,9 +68,10 @@ func (f *FSM) Init() {
 	}
 }
 
-// ComputePolinom
-// Вычисление полинома Жегалкина
-// /*
+// Вычисление полинома Жегалкина. На выход функции подается значение inputX, которое будет иметь значения {0,1}, состояение
+// state и функция psi.
+// Входные данные: inputX int, state, psi []int
+// Выходные данные: int
 func ComputePolinom(inputX int, state, psi []int) int {
 	zp := []int{1}
 	extendedCurrentState := append(state, inputX)
@@ -77,7 +79,7 @@ func ComputePolinom(inputX int, state, psi []int) int {
 	for i := 1; i < len(extendedCurrentState)+1; i++ {
 		gen := combin.NewCombinationGenerator(len(extendedCurrentState), i)
 		for gen.Next() {
-			var product int = 1
+			var product = 1
 			for _, idx := range gen.Combination(nil) {
 				product *= extendedCurrentState[idx]
 			}
@@ -99,9 +101,9 @@ func ComputePolinom(inputX int, state, psi []int) int {
 	return count % 2
 }
 
-/*
-Генерация значений булевой функции - {0,1}
-*/
+// Данная функция генерирует значения {0,1}. Генерация выполняется n раз, где n - длина регистра автомата
+// Входные данные: n
+// Выходные данные: []int = {0,1}
 func generateBinaryCombinations(n int) <-chan []int {
 	result := make(chan []int)
 

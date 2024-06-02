@@ -5,9 +5,7 @@ type Graph struct {
 	graph     map[State][]State
 }
 
-// NewGraph
 // Создается новый экземпляр класс Graph
-// /*
 func NewGraph() *Graph {
 	return &Graph{
 		graphFull: make(map[State]map[State]string),
@@ -15,15 +13,12 @@ func NewGraph() *Graph {
 	}
 }
 
-// AddEdge /*
 // Добавляется новая сторона графа
 func (g *Graph) AddEdge(source, dest State, weight string) {
 	g.graph[source] = append(g.graph[source], dest)
 }
 
-// GetConnectivityComponents
 // Получение компонентов связности автомата
-// /*
 func (g *Graph) GetConnectivityComponents() [][]State {
 	var (
 		connectivityComponents [][]State
@@ -42,9 +37,7 @@ func (g *Graph) GetConnectivityComponents() [][]State {
 	return connectivityComponents
 }
 
-// GetStrongConnectivityComponents
 // Получение компонентов сильной связности автомата
-// /*
 func (g *Graph) GetStrongConnectivityComponents() [][]State {
 	stack := make([]State, 0, len(g.graph))
 	visited := make(map[State]bool, len(g.graph))
@@ -73,9 +66,9 @@ func (g *Graph) GetStrongConnectivityComponents() [][]State {
 	return strongComponents
 }
 
-/*
-Алгоритм поиска в глубину
-*/
+// Алгоритм поиска в глубину. На вход подается текущее состояние currentState, карта уже посещенный вершин visited,
+// указатель на массив компонент component
+// Входные данные: currentState State, visited map[State]bool, component *[]State
 func (g *Graph) dfs(currentState State, visited map[State]bool, component *[]State) {
 	visited[currentState] = true
 	*component = append(*component, currentState)
