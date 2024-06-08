@@ -5,7 +5,7 @@ type EquivalenceClass struct {
 }
 
 // Создаем класс новый экземпляр класса эквивалентности
-func NewClassEquivalence() *EquivalenceClass {
+func NewEquivalenceClass() *EquivalenceClass {
 	return &EquivalenceClass{
 		Class: make([]State, 0),
 	}
