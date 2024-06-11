@@ -192,7 +192,7 @@ func (f *FSM) minimization() {
 	for _, subclass := range f.equivalenceClass {
 		fixedState := subclass.Class[0]
 		if len(subclass.Class) > 1 {
-			for i := 1; i <= len(subclass.Class); i++ {
+			for i := 1; i < len(subclass.Class); i++ {
 				for key, state := range f.PhiTable {
 					if subclass.Class[i] == key {
 						state[0] = fixedState
@@ -360,9 +360,11 @@ func transformationToPolinom(seq []int) []int {
 }
 
 func getMemoryFunctionCoefsStr(vector []int) string {
-	vectorString := ""
+	var vectorString strings.Builder
+	vectorString.Grow(len(vector))
+
 	if vector[0] == 1 {
-		vectorString += "1 + "
+		vectorString.WriteString("1 ⊕ ")
 	}
 
 	lengthOfVector := int(math.Log2(float64(len(vector))))
@@ -382,13 +384,12 @@ func getMemoryFunctionCoefsStr(vector []int) string {
 					} else {
 						coefStr += "x_i"
 					}
-					vectorString += coefStr
+					vectorString.WriteString(coefStr)
 				}
 			}
-			vectorString += " + "
+			vectorString.WriteString(" + ")
 		}
 	}
 
-	vectorString = strings.TrimSuffix(vectorString, " + ")
-	return vectorString
+	return strings.TrimSuffix(vectorString.String(), " + ")
 }

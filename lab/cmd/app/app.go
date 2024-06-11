@@ -30,7 +30,7 @@ func (app *App) Run() {
 	}
 
 	// открываем файл, в который будем записывать результаты работы программы
-	file, err := os.Create("test1.txt")
+	file, err := os.Create("test19.txt")
 	if err != nil {
 		panic(err)
 	}
